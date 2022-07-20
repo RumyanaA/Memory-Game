@@ -1,13 +1,14 @@
-import logo from './logo.svg';
 import './App.scss';
-import Card from './Card';
+import CardsContainer from './CardsContainer';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">        
-          <Card animal="panda"/>
-      </header>
+      {/* <header className="App-header">
+      </header> */}
+      <div className="app-body">
+      <CardsContainer />
+      </div>
     </div>
   );
 }

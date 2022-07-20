@@ -1,8 +1,9 @@
 .flip-card-outer{
 background-color: transparent;
-  width: 10rem;
+  width: 11rem;
   height: 13rem;
   perspective: 1000px;
+  margin: 1rem;
 }
 .card{
     position: relative;
@@ -14,8 +15,8 @@ background-color: transparent;
 }
 
 .card-pic{
-    height: 15rem;
-    width:13rem;
+    height:inherit;
+    width:inherit;
 }
 .card-front{
     position: absolute;
