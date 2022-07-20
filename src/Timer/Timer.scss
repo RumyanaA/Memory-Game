@@ -1,0 +1,14 @@
+.time-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    padding: 6px 13px;
+    box-shadow: 4px 5px cornflowerblue;
+    .timer-img{
+        width:4rem;
+        margin-right:1rem;
+
+    }
+}
