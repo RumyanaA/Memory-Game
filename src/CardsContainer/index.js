@@ -45,17 +45,17 @@ const CardsContainer = () => {
     setFirstFlip("");
   };
 
+  //reset all states and re-shuffle cards on reset button click
   const resetGameCards = () => {
     setFirstFlip("");
     setCloseCardIds([]);
     setMatchedCardIds([]);
     duplicateAndShuffle();
-    console.log("event parent");
   };
   return (
     <div className="cards-container">
       {animalCards?.length === 12 &&
-        animalCards.map((animalPic,index) => (
+        animalCards.map((animalPic, index) => (
           <Card
             animal={animalPic}
             matchedCards={matchedCardIds}
@@ -63,7 +63,7 @@ const CardsContainer = () => {
             hasFirstFlip={firstFlip !== ""}
             flipFirstCard={flipFirstCard}
             flipSecondCard={flipSecondCard}
-            resetAllCards = {resetGameCards}
+            resetAllCards={resetGameCards}
             cardId={index}
           />
         ))}

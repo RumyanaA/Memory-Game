@@ -10,7 +10,7 @@ const Card = ({
   flipFirstCard,
   flipSecondCard,
   resetAllCards,
-  cardId
+  cardId,
 }) => {
   const [flip, setFlip] = useState(false);
   const [disableFlip, setDisableFlip] = useState(false);
@@ -36,7 +36,8 @@ const Card = ({
 
   useEffect(() => {
     if (!matchedCards.includes(animal) && idCardToFlipDown.includes(animal)) {
-      setTimeout(setFlip, 800, false); //flip down if idCardToFlipDown has current card's animal
+      setTimeout(setFlip, 800, false);
+      //flip down if idCardToFlipDown has current card's animal
     }
     if (matchedCards.includes(animal)) {
       //if card has a match - disable from being clicked
@@ -49,15 +50,15 @@ const Card = ({
     return () => PubSub.unsubscribe(subscribeEvent.current);
   }, []);
 
+  //reset current card
   const resetCard = () => {
-    console.log('unsubscribe')
     setDisableFlip(false);
     setFlip(false);
-    if(cardId===11){
-      console.log('hi')
-      resetAllCards();
+    // if its last card - execute reset all cards in parent component
+    if (cardId === 11) {
+      // setTimeout because of css transition being slow
+      setTimeout(resetAllCards, 200);
     }
-   
   };
 
   return (
