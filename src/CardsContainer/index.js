@@ -9,10 +9,14 @@ const CardsContainer = () => {
   const [matchedCardIds, setMatchedCardIds] = useState([]);
 
   //duplicate cards and shuffle
-  useEffect(() => {
+  const duplicateAndShuffle = () => {
     const duplicatedArray = animalsPics.concat(animalsPics);
     shuffle(duplicatedArray);
     setAnimalCards([...duplicatedArray]);
+  };
+
+  useEffect(() => {
+    duplicateAndShuffle();
   }, []);
 
   const shuffle = (array) => {
@@ -30,27 +34,39 @@ const CardsContainer = () => {
   //executes when second card is flipped
   const flipSecondCard = (cardId) => {
     if (firstFlip !== cardId) {
-      setCloseCardIds([firstFlip, cardId]); //if cards are not the same - flip them down
+      //if cards are not the same - flip them down
+      setCloseCardIds([firstFlip, cardId]);
     } else {
       const newMatchedCards = matchedCardIds;
-      newMatchedCards.push(cardId); // if cards are a match - push them in array
-                                    // and set them flipped up
+      // if cards are a match - push them in array
+      newMatchedCards.push(cardId);
       setMatchedCardIds([...newMatchedCards]);
     }
     setFirstFlip("");
   };
+
+  const resetGameCards = () => {
+    setFirstFlip("");
+    setCloseCardIds([]);
+    setMatchedCardIds([]);
+    duplicateAndShuffle();
+    console.log("event parent");
+  };
   return (
     <div className="cards-container">
-      {animalCards?.map((animalPic) => (
-        <Card
-          animal={animalPic}
-          matchedCards={matchedCardIds}
-          idCardToFlipDown={closeCardIds}
-          hasFirstFlip={firstFlip !== ""}
-          flipFirstCard={flipFirstCard}
-          flipSecondCard={flipSecondCard}
-        />
-      ))}
+      {animalCards?.length === 12 &&
+        animalCards.map((animalPic,index) => (
+          <Card
+            animal={animalPic}
+            matchedCards={matchedCardIds}
+            idCardToFlipDown={closeCardIds}
+            hasFirstFlip={firstFlip !== ""}
+            flipFirstCard={flipFirstCard}
+            flipSecondCard={flipSecondCard}
+            resetAllCards = {resetGameCards}
+            cardId={index}
+          />
+        ))}
     </div>
   );
 };

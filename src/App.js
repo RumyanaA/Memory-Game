@@ -1,7 +1,6 @@
 import './App.scss';
 import CardsContainer from './CardsContainer';
-import ResetButton from './ResetButton';
-import Timer from './Timer';
+import SideMenu from './SideMenu';
 
 function App() {
   return (
@@ -9,8 +8,7 @@ function App() {
       {/* <header className="App-header">
       </header> */}
       <div className="app-body">
-        <Timer initialMinute={1} initialSeconds={30}/>
-        <ResetButton />
+        <SideMenu />
       <CardsContainer />
       </div>
     </div>

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import PubSub from "pubsub-js";
 import "./Card.scss";
 
 const Card = ({
@@ -8,9 +9,12 @@ const Card = ({
   hasFirstFlip,
   flipFirstCard,
   flipSecondCard,
+  resetAllCards,
+  cardId
 }) => {
   const [flip, setFlip] = useState(false);
   const [disableFlip, setDisableFlip] = useState(false);
+  const subscribeEvent = useRef(null);
 
   const flipCard = () => {
     setFlip(!flip);
@@ -32,13 +36,29 @@ const Card = ({
 
   useEffect(() => {
     if (!matchedCards.includes(animal) && idCardToFlipDown.includes(animal)) {
-      setTimeout(setFlip, 1000, false); //flip down if idCardToFlipDown has current card's animal
+      setTimeout(setFlip, 800, false); //flip down if idCardToFlipDown has current card's animal
     }
     if (matchedCards.includes(animal)) {
       //if card has a match - disable from being clicked
       setDisableFlip(true);
     }
   }, [animal, idCardToFlipDown, matchedCards]);
+
+  useEffect(() => {
+    subscribeEvent.current = PubSub.subscribe("resetGame", resetCard);
+    return () => PubSub.unsubscribe(subscribeEvent.current);
+  }, []);
+
+  const resetCard = () => {
+    console.log('unsubscribe')
+    setDisableFlip(false);
+    setFlip(false);
+    if(cardId===11){
+      console.log('hi')
+      resetAllCards();
+    }
+   
+  };
 
   return (
     <div className="flip-card-outer">
