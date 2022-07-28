@@ -1,6 +1,5 @@
 import './App.scss';
-import CardsContainer from './CardsContainer';
-import SideMenu from './SideMenu';
+import ContentWrapper from './ContentWrapper';
 
 function App() {
   return (
@@ -8,8 +7,7 @@ function App() {
       {/* <header className="App-header">
       </header> */}
       <div className="app-body">
-        <SideMenu />
-      <CardsContainer />
+        <ContentWrapper />
       </div>
     </div>
   );
