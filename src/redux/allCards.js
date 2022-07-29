@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { animalsPics } from "../constants";
 
 export const allCardSlice = createSlice({
-  name: "timer",
+  name: "allCards",
   initialState: {
     animalsPics,
     matchedCards: [],

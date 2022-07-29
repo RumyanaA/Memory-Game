@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import PubSub from "pubsub-js";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { executeResetEachCard } from "../redux/card";
 import "./Card.scss";
 
 const Card = ({
@@ -14,7 +15,8 @@ const Card = ({
 }) => {
   const [flip, setFlip] = useState(false);
   const [disableFlip, setDisableFlip] = useState(false);
-  const subscribeEvent = useRef(null);
+  const isResetClicked = useSelector((state) => state.card.isResetClicked);
+  const dispatch = useDispatch();
 
   const flipCard = () => {
     setFlip(!flip);
@@ -47,9 +49,11 @@ const Card = ({
   }, [animal, idCardToFlipDown, matchedCards]);
 
   useEffect(() => {
-    subscribeEvent.current = PubSub.subscribe("resetGame", resetCard);
-    return () => PubSub.unsubscribe(subscribeEvent.current);
-  }, []);
+    if (isResetClicked) {
+      resetCard();
+      dispatch(executeResetEachCard(false));
+    }
+  }, [isResetClicked]);
 
   //reset current card
   const resetCard = () => {

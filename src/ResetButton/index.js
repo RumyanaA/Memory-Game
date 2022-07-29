@@ -1,15 +1,16 @@
 import { GrPowerReset } from "react-icons/gr";
-import PubSub from "pubsub-js";
 import { useDispatch } from "react-redux";
 import { resetTimer } from "../redux/timer";
+import { executeResetEachCard } from "../redux/card";
+
 import "./ResetButton.scss";
 
 const ResetButton = () => {
   const dispatch = useDispatch();
 
   const resetGame = () => {
-    PubSub.publish("resetGame");
     dispatch(resetTimer());
+    dispatch(executeResetEachCard(true));
   };
   
   return (
