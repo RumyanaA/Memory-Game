@@ -24,6 +24,7 @@ const Card = ({
     if (flip) {
       //determines which card is flipped
       if (hasFirstFlip) {
+        //flips second card
         flipSecondCard(animal);
       } else {
         flipFirstCard(animal);

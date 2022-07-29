@@ -1,29 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Card from "../Card";
 import { animalsPics } from "../constants";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setAnimalCards,
+  setFirstFlip,
+  setCloseCardIds,
+  setMatchedCardIds,
+  resetCards,
+} from "../redux/allCards";
 import "./CardsContainer.scss";
 const CardsContainer = () => {
-  const [animalCards, setAnimalCards] = useState(animalsPics);
-  const [firstFlip, setFirstFlip] = useState("");
-  const [closeCardIds, setCloseCardIds] = useState([]);
-  const [matchedCardIds, setMatchedCardIds] = useState([]);
+  const animalCards = useSelector((state) => state.allCards.animalsPics);
+  const matchedCardIds = useSelector((state) => state.allCards.matchedCards);
+  const closeCardIds = useSelector((state) => state.allCards.idCardToFlipDown);
+  const firstFlip = useSelector((state) => state.allCards.firstFlip);
+
+  const dispatch = useDispatch();
 
   //duplicate cards and shuffle
   const duplicateAndShuffle = () => {
     const duplicatedArray = animalsPics.concat(animalsPics);
     shuffle(duplicatedArray);
-    setAnimalCards([...duplicatedArray]);
+    dispatch(setAnimalCards(duplicatedArray));
   };
 
   useEffect(() => {
     duplicateAndShuffle();
   }, []);
 
-  useEffect(()=>{
-  if(matchedCardIds.length === animalsPics.length){
-//open modal
-}
-  },[matchedCardIds])
+  useEffect(() => {
+    if (matchedCardIds.length === animalsPics.length) {
+      //open modal
+    }
+  }, [matchedCardIds]);
+
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -31,30 +42,27 @@ const CardsContainer = () => {
     }
   };
 
-  //executes when first card is flipped
+  // executes when first card is flipped
   const flipFirstCard = (cardId) => {
-    setFirstFlip(cardId);
+    dispatch(setFirstFlip(cardId));
   };
 
   //executes when second card is flipped
   const flipSecondCard = (cardId) => {
     if (firstFlip !== cardId) {
       //if cards are not the same - flip them down
-      setCloseCardIds([firstFlip, cardId]);
+      dispatch(setCloseCardIds([firstFlip, cardId]));
     } else {
-      const newMatchedCards = matchedCardIds;
-      // if cards are a match - push them in array
+      const newMatchedCards = Object.assign([], matchedCardIds);
       newMatchedCards.push(cardId);
-      setMatchedCardIds([...newMatchedCards]);
+      dispatch(setMatchedCardIds(newMatchedCards));
     }
-    setFirstFlip("");
+    dispatch(setFirstFlip(""));
   };
 
   //reset all states and re-shuffle cards on reset button click
   const resetGameCards = () => {
-    setFirstFlip("");
-    setCloseCardIds([]);
-    setMatchedCardIds([]);
+    dispatch(resetCards());
     duplicateAndShuffle();
   };
   return (
