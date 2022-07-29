@@ -1,23 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from "react";
-import PubSub from "pubsub-js";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  decrementSeconds,
+  decrementMinutes,
+  setSecondsByAmount,
+} from "../redux/timer";
 import "./Timer.scss";
-const Timer = (props) => {
-  const { initialMinute = 0, initialSeconds = 0 } = props;
-  const [minutes, setMinutes] = useState(initialMinute);
-  const [seconds, setSeconds] = useState(initialSeconds);
-  const subscribeEvent = useRef(null);
+const Timer = () => {
+  const { minutes, seconds } = useSelector((state) => state.timer);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let myInterval = setInterval(() => {
       if (seconds > 0) {
-        setSeconds(seconds - 1);
+        dispatch(decrementSeconds());
       }
       if (seconds === 0) {
         if (minutes === 0) {
           clearInterval(myInterval);
         } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
+          dispatch(decrementMinutes());
+          dispatch(setSecondsByAmount(59));
         }
       }
     }, 1000);
@@ -26,17 +30,6 @@ const Timer = (props) => {
       clearInterval(myInterval);
     };
   });
-
-  //reset timer when reset button is clicked
-  useEffect(() => {
-    subscribeEvent.current = PubSub.subscribe("resetGame", resetGameTimer);
-    return () => PubSub.unsubscribe(subscribeEvent.current);
-  }, []);
-
-  const resetGameTimer = () => {
-    setMinutes(initialMinute);
-    setSeconds(initialSeconds);
-  };
 
   return (
     <div className="time-wrapper">
