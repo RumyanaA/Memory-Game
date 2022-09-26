@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Card from "../Card";
+import EndGameModal from "../EndLevelModal";
 import { animalsPics } from "../constants";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -11,6 +12,7 @@ import {
 } from "../redux/allCards";
 import "./CardsContainer.scss";
 const CardsContainer = () => {
+  const [isEndLevelModalOpen, setIsEndLevelModalOpen] = useState(false);
   const animalCards = useSelector((state) => state.allCards.animalsPics);
   const matchedCardIds = useSelector((state) => state.allCards.matchedCards);
   const closeCardIds = useSelector((state) => state.allCards.idCardToFlipDown);
@@ -19,19 +21,20 @@ const CardsContainer = () => {
   const dispatch = useDispatch();
 
   //duplicate cards and shuffle
-  const duplicateAndShuffle = () => {
+  const duplicateAndShuffle = useCallback(() => {
     const duplicatedArray = animalsPics.concat(animalsPics);
     shuffle(duplicatedArray);
     dispatch(setAnimalCards(duplicatedArray));
-  };
+  },[dispatch]);
 
   useEffect(() => {
     duplicateAndShuffle();
-  }, []);
+  }, [duplicateAndShuffle]);
 
   useEffect(() => {
+    //open modal
     if (matchedCardIds.length === animalsPics.length) {
-      //open modal
+      setTimeout(setIsEndLevelModalOpen, 500, true);
     }
   }, [matchedCardIds]);
 
@@ -80,6 +83,7 @@ const CardsContainer = () => {
             cardId={index}
           />
         ))}
+      <EndGameModal isModalOpen={isEndLevelModalOpen} />
     </div>
   );
 };

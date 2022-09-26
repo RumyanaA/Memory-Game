@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { executeResetEachCard } from "../redux/card";
 import "./Card.scss";
@@ -48,15 +48,8 @@ const Card = ({
     }
   }, [animal, idCardToFlipDown, matchedCards]);
 
-  useEffect(() => {
-    if (isResetClicked) {
-      resetCard();
-      dispatch(executeResetEachCard(false));
-    }
-  }, [isResetClicked]);
-
   //reset current card
-  const resetCard = () => {
+  const resetCard = useCallback(() => {
     setDisableFlip(false);
     setFlip(false);
     // if its last card - execute reset all cards in parent component
@@ -64,7 +57,15 @@ const Card = ({
       // setTimeout because of css transition being slow
       setTimeout(resetAllCards, 200);
     }
-  };
+  },[cardId,resetAllCards]);
+
+  useEffect(() => {
+    if (isResetClicked) {
+      resetCard();
+      dispatch(executeResetEachCard(false));
+    }
+  }, [dispatch, isResetClicked, resetCard]);
+
 
   return (
     <div className="flip-card-outer">
