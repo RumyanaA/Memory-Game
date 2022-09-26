@@ -7,6 +7,7 @@ export const timerSlice = createSlice({
   initialState: {
     minutes: initialMinutes,
     seconds: initialSeconds,
+    isPaused: false
   },
   reducers: {
     decrementMinutes: (state) => {
@@ -22,6 +23,9 @@ export const timerSlice = createSlice({
       state.minutes = initialMinutes;
       state.seconds = initialSeconds;
     },
+    pauseTimer: (state) => {
+      state.isPaused = !state.isPaused;
+    }
   },
 });
 
@@ -31,6 +35,7 @@ export const {
   decrementSeconds,
   setSecondsByAmount,
   resetTimer,
+  pauseTimer
 } = timerSlice.actions;
 
 export default timerSlice.reducer;

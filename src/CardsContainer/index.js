@@ -10,6 +10,7 @@ import {
   setMatchedCardIds,
   resetCards,
 } from "../redux/allCards";
+import { pauseTimer } from "../redux/timer";
 import "./CardsContainer.scss";
 const CardsContainer = () => {
   const [isEndLevelModalOpen, setIsEndLevelModalOpen] = useState(false);
@@ -25,7 +26,7 @@ const CardsContainer = () => {
     const duplicatedArray = animalsPics.concat(animalsPics);
     shuffle(duplicatedArray);
     dispatch(setAnimalCards(duplicatedArray));
-  },[dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     duplicateAndShuffle();
@@ -34,6 +35,7 @@ const CardsContainer = () => {
   useEffect(() => {
     //open modal
     if (matchedCardIds.length === animalsPics.length) {
+      dispatch(pauseTimer());
       setTimeout(setIsEndLevelModalOpen, 500, true);
     }
   }, [matchedCardIds]);
@@ -81,6 +83,7 @@ const CardsContainer = () => {
             flipSecondCard={flipSecondCard}
             resetAllCards={resetGameCards}
             cardId={index}
+            key={index}
           />
         ))}
       <EndGameModal isModalOpen={isEndLevelModalOpen} />

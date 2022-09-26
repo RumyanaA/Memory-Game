@@ -9,26 +9,29 @@ import {
 import "./Timer.scss";
 const Timer = () => {
   const { minutes, seconds } = useSelector((state) => state.timer);
+  const {isPaused} = useSelector((state)=> state.timer);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if(!isPaused){
     let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        dispatch(decrementSeconds());
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(myInterval);
-        } else {
-          dispatch(decrementMinutes());
-          dispatch(setSecondsByAmount(59));
+        if (seconds > 0) {
+          dispatch(decrementSeconds());
         }
-      }
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(myInterval);
+          } else {
+            dispatch(decrementMinutes());
+            dispatch(setSecondsByAmount(59));
+          }
+        }
     }, 1000);
 
     return () => {
       clearInterval(myInterval);
     };
+  }
   });
 
   return (
