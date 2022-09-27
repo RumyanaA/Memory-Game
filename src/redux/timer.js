@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-const initialMinutes = 1;
-const initialSeconds = 30;
+import { initialMinutes, initialSeconds } from "../constants";
 export const timerSlice = createSlice({
   name: "timer",
   initialState: {

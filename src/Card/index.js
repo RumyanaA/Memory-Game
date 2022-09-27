@@ -40,7 +40,7 @@ const Card = ({
 
   useEffect(() => {
     if (!matchedCards.includes(animal) && idCardToFlipDown.includes(animal)) {
-      setTimeout(setFlip, 800, false);
+      setTimeout(setFlip, 500, false);
       //flip down if idCardToFlipDown has current card's animal
     }
     if (matchedCards.includes(animal)) {

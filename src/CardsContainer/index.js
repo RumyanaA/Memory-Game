@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { animalsPics, initialMinutes, initialSeconds } from "../constants";
 import Card from "../Card";
 import EndGameModal from "../EndLevelModal";
-import { animalsPics } from "../constants";
-import { useSelector, useDispatch } from "react-redux";
 import {
   setAnimalCards,
   setFirstFlip,
@@ -11,6 +11,7 @@ import {
   resetCards,
 } from "../redux/allCards";
 import { pauseTimer } from "../redux/timer";
+import { setlevelTime } from "../redux/completionInfo";
 import "./CardsContainer.scss";
 const CardsContainer = () => {
   const [isEndLevelModalOpen, setIsEndLevelModalOpen] = useState(false);
@@ -18,6 +19,7 @@ const CardsContainer = () => {
   const matchedCardIds = useSelector((state) => state.allCards.matchedCards);
   const closeCardIds = useSelector((state) => state.allCards.idCardToFlipDown);
   const firstFlip = useSelector((state) => state.allCards.firstFlip);
+  const { minutes, seconds } = useSelector((state) => state.timer);
 
   const dispatch = useDispatch();
 
@@ -32,13 +34,24 @@ const CardsContainer = () => {
     duplicateAndShuffle();
   }, [duplicateAndShuffle]);
 
+  const calculateTimePassed = () =>{
+    let minutesPassed = initialMinutes - minutes;
+    let secondsPassed = initialSeconds - seconds;
+    if(secondsPassed<0){
+      minutesPassed -= minutesPassed;
+      secondsPassed = secondsPassed +60;
+    }
+    return (`${minutesPassed}:${secondsPassed < 10 ? `0${secondsPassed}` : secondsPassed}`)
+  }
   useEffect(() => {
     //open modal
     if (matchedCardIds.length === animalsPics.length) {
       dispatch(pauseTimer());
+      const timePassed = calculateTimePassed();
+      dispatch(setlevelTime(timePassed));
       setTimeout(setIsEndLevelModalOpen, 500, true);
     }
-  }, [matchedCardIds]);
+  }, [dispatch, matchedCardIds]);
 
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {

@@ -1,0 +1,73 @@
+.Modal{
+    position: absolute;
+    display: flex;
+    height: 22rem;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    padding: 1rem;
+    padding-top: 0.4rem;
+    padding-bottom: 2rem;
+    border-radius: 18%;
+    border: 2px solid mediumvioletred;
+    background-color: #c9e4ff;;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.level-info{
+    display:flex;
+    flex-direction: column;
+    border-radius: 20%;
+    background-color: lightskyblue;
+    border: 2px solid darkblue;
+    height: 14rem;
+    width: 17rem;
+    padding: 1rem;
+    font-family: cursive;
+
+    .level-complete{
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+    }
+
+    .star-container{
+    display: flex;
+    justify-content: space-around;
+    .star-icon{
+        background-color: #c9e4ff;
+        color: yellow;
+        font-size: 3rem;
+        padding: 0.1rem;
+        border-radius: 50%;
+        border: 1px solid deepskyblue;
+        }
+    }
+   
+}
+
+.buttons-container{
+    display: flex;
+    width: 15rem;
+    justify-content: space-around;
+}
+
+.modal-buttons{
+    border-radius: 50%;
+    padding: 0.5rem;
+    height: 4rem;
+    width: 6rem;
+    background-color: lightgoldenrodyellow;
+    border: 2px solid orange;
+    font-size: 17px;
+    font-family: cursive;
+    cursor: pointer;
+}
+.modal-buttons:hover{
+    background-color: palegreen;
+    border: 2px solid green;
+}

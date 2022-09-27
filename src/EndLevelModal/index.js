@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
+import { useDispatch, useSelector } from "react-redux";
+import { pauseTimer, resetTimer } from "../redux/timer";
+import { executeResetEachCard } from "../redux/card";
+import {BsFillStarFill} from "react-icons/bs";
+import "./EndLevelModal.scss";
+
 const EndLevelModal = ({ isModalOpen }) => {
   const [modalIsOpen, setIsOpen] = useState(isModalOpen);
+  const { levelTime } = useSelector((state) => state.completionInfo);
 
-  function closeModal() {
+  const dispatch = useDispatch();
+
+  const closeModal = () => {
     setIsOpen(false);
+  };
+  const handleResetClick = () =>{
+    setIsOpen(false);
+    dispatch(resetTimer());
+    dispatch(pauseTimer());
+    dispatch(executeResetEachCard(true));
+
+  }
+  const handleNextLevelClick = () =>{
+    setIsOpen(false)
+    
   }
 
   useEffect(() => {
@@ -24,11 +34,23 @@ const EndLevelModal = ({ isModalOpen }) => {
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
-      style={customStyles}
+      className="Modal"
       contentLabel="Example Modal"
     >
-      <button onClick={closeModal}>close</button>
-      <div>I am a modal</div>
+      <div className="level-info">
+        <h3 className="level-complete">Level Completed</h3>
+        <div className="star-container">
+        <BsFillStarFill className="star-icon"/>
+        <BsFillStarFill className="star-icon"/>
+        <BsFillStarFill className="star-icon"/>
+        </div>
+        <h5 className="level-time">Level Time: {levelTime}</h5>
+        <h5 className="level-time">Level Score: 300</h5>
+      </div>
+      <div className="buttons-container">
+        <button className="modal-buttons" onClick={handleResetClick}>Reset Level</button>
+        <button className="modal-buttons" onClick={handleNextLevelClick}>Next Level</button>
+        </div>
     </Modal>
   );
 };
