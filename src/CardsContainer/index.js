@@ -1,38 +1,32 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { animalsPics, initialMinutes, initialSeconds } from "../constants";
+import { initialMinutes, initialSeconds } from "../constants";
 import Card from "../Card";
 import EndGameModal from "../EndLevelModal";
 import {
-  setAnimalCards,
   setFirstFlip,
   setCloseCardIds,
   setMatchedCardIds,
   resetCards,
-} from "../redux/allCards";
+} from "../redux/matchedCards";
+import { resetLevel, setLevel } from "../redux/currentLevel";
 import { pauseTimer } from "../redux/timer";
 import { setlevelTime } from "../redux/completionInfo";
 import "./CardsContainer.scss";
 const CardsContainer = () => {
   const [isEndLevelModalOpen, setIsEndLevelModalOpen] = useState(false);
-  const animalCards = useSelector((state) => state.allCards.animalsPics);
-  const matchedCardIds = useSelector((state) => state.allCards.matchedCards);
-  const closeCardIds = useSelector((state) => state.allCards.idCardToFlipDown);
-  const firstFlip = useSelector((state) => state.allCards.firstFlip);
+  const initialCards = useSelector((state)=>state.currentLevel.initialLevelCards);
+  const currentLevelCards = useSelector((state)=>state.currentLevel.duplicatedLevelCards);
+  const matchedCardIds = useSelector((state) => state.matchedCards.matchedCards);
+  const closeCardIds = useSelector((state) => state.matchedCards.idCardToFlipDown);
+  const firstFlip = useSelector((state) => state.matchedCards.firstFlip);
   const { minutes, seconds } = useSelector((state) => state.timer);
 
   const dispatch = useDispatch();
 
-  //duplicate cards and shuffle
-  const duplicateAndShuffle = useCallback(() => {
-    const duplicatedArray = animalsPics.concat(animalsPics);
-    shuffle(duplicatedArray);
-    dispatch(setAnimalCards(duplicatedArray));
-  }, [dispatch]);
-
   useEffect(() => {
-    duplicateAndShuffle();
-  }, [duplicateAndShuffle]);
+    dispatch(setLevel());
+  }, [dispatch]);
 
   const calculateTimePassed = () =>{
     let minutesPassed = initialMinutes - minutes;
@@ -45,20 +39,13 @@ const CardsContainer = () => {
   }
   useEffect(() => {
     //open modal
-    if (matchedCardIds.length === animalsPics.length) {
+    if (matchedCardIds.length && matchedCardIds.length === initialCards.length) {
       dispatch(pauseTimer());
       const timePassed = calculateTimePassed();
       dispatch(setlevelTime(timePassed));
       setTimeout(setIsEndLevelModalOpen, 500, true);
     }
   }, [dispatch, matchedCardIds]);
-
-  const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  };
 
   // executes when first card is flipped
   const flipFirstCard = (cardId) => {
@@ -81,12 +68,12 @@ const CardsContainer = () => {
   //reset all states and re-shuffle cards on reset button click
   const resetGameCards = () => {
     dispatch(resetCards());
-    duplicateAndShuffle();
+    dispatch(resetLevel()); 
   };
   return (
     <div className="cards-container">
-      {animalCards?.length === 12 &&
-        animalCards.map((animalPic, index) => (
+      {currentLevelCards?.length &&
+        currentLevelCards.map((animalPic, index) => (
           <Card
             animal={animalPic}
             matchedCards={matchedCardIds}
@@ -99,7 +86,7 @@ const CardsContainer = () => {
             key={index}
           />
         ))}
-      <EndGameModal isModalOpen={isEndLevelModalOpen} />
+      <EndGameModal isModalOpen={isEndLevelModalOpen} resetProperty = {setIsEndLevelModalOpen} />
     </div>
   );
 };

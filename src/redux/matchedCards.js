@@ -1,18 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { animalsPics } from "../constants";
 
-export const allCardSlice = createSlice({
-  name: "allCards",
+export const matchedCardsSlice = createSlice({
+  name: "matchedCards",
   initialState: {
-    animalsPics,
     matchedCards: [],
     idCardToFlipDown: [],
     firstFlip: "",
   },
   reducers: {
-    setAnimalCards: (state, action) => {
-      state.animalsPics = [...action.payload];
-    },
     setFirstFlip: (state, action) => {
       state.firstFlip = action.payload;
     },
@@ -32,11 +27,10 @@ export const allCardSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  setAnimalCards,
   setFirstFlip,
   setCloseCardIds,
   setMatchedCardIds,
   resetCards
-} = allCardSlice.actions;
+} = matchedCardsSlice.actions;
 
-export default allCardSlice.reducer;
+export default matchedCardsSlice.reducer;

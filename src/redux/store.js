@@ -1,14 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import timerReducer from "./timer";
-import allCardsReducer from "./allCards";
+import matchedCardsReducer from "./matchedCards";
 import cardReducer from "./card";
-import completionInfo from "./completionInfo";
+import completionInfoReducer from "./completionInfo";
+import currentLevelReducer from "./currentLevel";
 
 export default configureStore({
   reducer: {
     timer: timerReducer,
-    allCards: allCardsReducer,
+    matchedCards: matchedCardsReducer,
     card: cardReducer,
-    completionInfo: completionInfo
+    completionInfo: completionInfoReducer,
+    currentLevel: currentLevelReducer
   },
 });

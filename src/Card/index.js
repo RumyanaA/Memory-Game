@@ -12,7 +12,6 @@ const Card = ({
   flipFirstCard,
   flipSecondCard,
   resetAllCards,
-  cardId,
 }) => {
   const [flip, setFlip] = useState(false);
   const [disableFlip, setDisableFlip] = useState(false);
@@ -27,24 +26,23 @@ const Card = ({
     if (flip) {
       //determines which card is flipped
       if (hasFirstFlip) {
-        //flips second card
         flipSecondCard(animal);
       } else {
         flipFirstCard(animal);
       }
-    } else {
       //if same card is clicked twice - reset property
+    } else {
       flipFirstCard("");
     }
   }, [flip]);
 
   useEffect(() => {
+    //flip down if idCardToFlipDown has current card's animal
     if (!matchedCards.includes(animal) && idCardToFlipDown.includes(animal)) {
       setTimeout(setFlip, 500, false);
-      //flip down if idCardToFlipDown has current card's animal
     }
+    //if card has a match - disable from being clicked
     if (matchedCards.includes(animal)) {
-      //if card has a match - disable from being clicked
       setDisableFlip(true);
     }
   }, [animal, idCardToFlipDown, matchedCards]);
@@ -53,12 +51,9 @@ const Card = ({
   const resetCard = useCallback(() => {
     setDisableFlip(false);
     setFlip(false);
-    // if its last card - execute reset all cards in parent component
-    if (cardId === 11) {
-      // setTimeout because of css transition being slow
-      setTimeout(resetAllCards, 200);
-    }
-  },[cardId,resetAllCards]);
+    // setTimeout because of css transition being slow
+    setTimeout(resetAllCards, 200);
+  }, [resetAllCards]);
 
   useEffect(() => {
     if (isResetClicked) {
@@ -66,7 +61,6 @@ const Card = ({
       dispatch(executeResetEachCard(false));
     }
   }, [dispatch, isResetClicked, resetCard]);
-
 
   return (
     <div className="flip-card-outer">
