@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { animalsPics } from "../constants";
+import { animalsPics, maxLevel } from "../constants";
 import { shuffle } from "../utilities/shuffle";
 
 export const currentLevelSlice = createSlice({
@@ -12,23 +12,22 @@ export const currentLevelSlice = createSlice({
     duplicatedLevelCards: [],
   },
   reducers: {
-    setLevel: (state) => {
-      state.currentLevel++;
-      state.sliceNum += 2;
+    setLevel: (state,action) => {
+      if(action.payload && state.currentLevel<maxLevel){
+        state.currentLevel++;
+        state.sliceNum += 2;
+      }
+      state.constantsCards = shuffle(state.constantsCards);
       const currentCards = state.constantsCards.slice(0, state.sliceNum);
       state.initialLevelCards = [...currentCards];
       const duplicatedArray = currentCards.concat(currentCards);
       const shuffledArray = shuffle(duplicatedArray);
       state.duplicatedLevelCards = [...shuffledArray];
     },
-    resetLevel: (state)=>{
-        const shuffledArray = (shuffle(state.duplicatedLevelCards));
-        state.duplicatedLevelCards =[...shuffledArray];
-    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setLevel, resetLevel } = currentLevelSlice.actions;
+export const { setLevel } = currentLevelSlice.actions;
 
 export default currentLevelSlice.reducer;

@@ -9,7 +9,7 @@ import {
   setMatchedCardIds,
   resetCards,
 } from "../redux/matchedCards";
-import { resetLevel, setLevel } from "../redux/currentLevel";
+import { setLevel } from "../redux/currentLevel";
 import { pauseTimer } from "../redux/timer";
 import { setlevelTime } from "../redux/completionInfo";
 import "./CardsContainer.scss";
@@ -25,7 +25,7 @@ const CardsContainer = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setLevel());
+    dispatch(setLevel(true));
   }, [dispatch]);
 
   const calculateTimePassed = () =>{
@@ -68,7 +68,7 @@ const CardsContainer = () => {
   //reset all states and re-shuffle cards on reset button click
   const resetGameCards = () => {
     dispatch(resetCards());
-    dispatch(resetLevel()); 
+    dispatch(setLevel(false));
   };
   return (
     <div className="cards-container">

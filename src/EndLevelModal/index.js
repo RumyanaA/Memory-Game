@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { pauseTimer, resetTimer } from "../redux/timer";
 import { executeResetEachCard } from "../redux/card";
 import { BsFillStarFill } from "react-icons/bs";
-import "./EndLevelModal.scss";
 import { setLevel } from "../redux/currentLevel";
+import "./EndLevelModal.scss";
 
 const EndLevelModal = ({ isModalOpen, resetProperty }) => {
   const [modalIsOpen, setIsOpen] = useState(isModalOpen);
@@ -28,7 +28,7 @@ const EndLevelModal = ({ isModalOpen, resetProperty }) => {
 
   const handleNextLevelClick = () => {
     handleResetClick();
-    dispatch(setLevel());
+    dispatch(setLevel(true));
   };
 
   useEffect(() => {
