@@ -7,14 +7,15 @@ export const currentLevelSlice = createSlice({
   initialState: {
     currentLevel: 0,
     sliceNum: 1,
+    constantsCards:animalsPics,
     initialLevelCards:[],
-    duplicatedLevelCards: animalsPics,
+    duplicatedLevelCards: [],
   },
   reducers: {
     setLevel: (state) => {
       state.currentLevel++;
       state.sliceNum += 2;
-      const currentCards = state.duplicatedLevelCards.slice(0, state.sliceNum);
+      const currentCards = state.constantsCards.slice(0, state.sliceNum);
       state.initialLevelCards = [...currentCards];
       const duplicatedArray = currentCards.concat(currentCards);
       const shuffledArray = shuffle(duplicatedArray);
