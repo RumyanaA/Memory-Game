@@ -38,7 +38,7 @@
     .star-container{
     display: flex;
     justify-content: space-around;
-    .star-icon{
+    .star-icon-yellow{
         background-color: #c9e4ff;
         color: yellow;
         font-size: 3rem;
@@ -46,6 +46,15 @@
         border-radius: 50%;
         border: 1px solid deepskyblue;
         }
+        .star-icon-white{
+            background-color: #c9e4ff;
+            color: lightsteelblue;
+            font-size: 3rem;
+            padding: 0.1rem;
+            border-radius: 50%;
+            border: 1px solid deepskyblue;
+            }
+        
     }
    
     .modal-header{

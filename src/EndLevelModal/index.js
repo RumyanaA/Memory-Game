@@ -14,6 +14,7 @@ const EndLevelModal = ({ isModalOpen, resetProperty }) => {
   const { levelTime } = useSelector((state) => state.completionInfo);
   const {levelScore} = useSelector((state)=>state.completionInfo);
   const {totalScore} = useSelector((state)=>state.completionInfo);
+  const { minutes, seconds } = useSelector((state) => state.timer)
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -52,14 +53,13 @@ const EndLevelModal = ({ isModalOpen, resetProperty }) => {
       isOpen={modalIsOpen}
       onRequestClose={closeModal}
       className="Modal"
-      contentLabel="Example Modal"
     >
       <div className="level-info">
         <h3 className="level-complete">Level Completed</h3>
         <div className="star-container">
-          <BsFillStarFill className="star-icon" />
-          <BsFillStarFill className="star-icon" />
-          <BsFillStarFill className="star-icon" />
+          <BsFillStarFill className="star-icon-yellow" />
+          <BsFillStarFill className={(minutes===1 && seconds>=1) || seconds>29?"star-icon-yellow":"star-icon-white"} />
+          <BsFillStarFill className={minutes===1 && seconds>=1?"star-icon-yellow":"star-icon-white"} />
         </div>
         <h5 className="modal-header">Level Time: {levelTime}</h5>
         <h5 className="modal-header">Level Score: {levelScore}</h5>
