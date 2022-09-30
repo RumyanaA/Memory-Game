@@ -24,7 +24,7 @@
     border-radius: 20%;
     background-color: lightskyblue;
     border: 2px solid darkblue;
-    height: 14rem;
+    height: 16rem;
     width: 17rem;
     padding: 1rem;
     font-family: cursive;
@@ -48,6 +48,10 @@
         }
     }
    
+    .modal-header{
+        margin-bottom: 0.2rem;
+        margin-left: 1.6rem;
+    }
 }
 
 .buttons-container{

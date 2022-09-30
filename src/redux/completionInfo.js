@@ -3,27 +3,31 @@ import { createSlice } from "@reduxjs/toolkit";
 export const completionInfoSlice = createSlice({
   name: "CompletionInfo",
   initialState: {
-    levelNum: 1,
     levelTime:'',
-    score:0
+    levelScore:0,
+    totalScore:0
   },
   reducers: {
-    setlevelNum: (state, action)=>{
-        state.levelNum = action.payload;
-    },
     setlevelTime: (state, action)=>{
         state.levelTime = action.payload;
     },
-    addlevelScore: (state, action)=>{
-        state.score += action.payload;
+    setLevelScore:(state,action)=>{
+      state.levelScore = action.payload
+    },
+    setTotalScore(state,action){
+      if(action.payload){
+        state.totalScore -=state.levelScore
+      }else{
+        state.totalScore +=state.levelScore
+      }
     }
   },
 });
 
 export const {
-    setlevelNum,
     setlevelTime,
-    addlevelScore
+    setLevelScore,
+    setTotalScore
 } = completionInfoSlice.actions;
 
 export default completionInfoSlice.reducer;

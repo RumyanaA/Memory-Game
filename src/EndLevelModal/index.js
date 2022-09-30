@@ -6,11 +6,14 @@ import { executeResetEachCard } from "../redux/card";
 import { BsFillStarFill } from "react-icons/bs";
 import { setLevel } from "../redux/currentLevel";
 import "./EndLevelModal.scss";
+import { setTotalScore } from "../redux/completionInfo";
 
 const EndLevelModal = ({ isModalOpen, resetProperty }) => {
   const [modalIsOpen, setIsOpen] = useState(isModalOpen);
+  const [isNextLevelClicked, setIsNextLevelClicked] = useState(false);
   const { levelTime } = useSelector((state) => state.completionInfo);
-
+  const {levelScore} = useSelector((state)=>state.completionInfo);
+  const {totalScore} = useSelector((state)=>state.completionInfo);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -27,9 +30,18 @@ const EndLevelModal = ({ isModalOpen, resetProperty }) => {
   };
 
   const handleNextLevelClick = () => {
+    setIsNextLevelClicked(true);
     handleResetClick();
     dispatch(setLevel(true));
   };
+
+  useEffect(()=>{
+    if(!isNextLevelClicked){
+      // remove current score from total score
+      dispatch(setTotalScore(true));
+      setIsNextLevelClicked(false);
+    }
+  },[dispatch, isNextLevelClicked])
 
   useEffect(() => {
     setIsOpen(isModalOpen);
@@ -49,8 +61,9 @@ const EndLevelModal = ({ isModalOpen, resetProperty }) => {
           <BsFillStarFill className="star-icon" />
           <BsFillStarFill className="star-icon" />
         </div>
-        <h5 className="level-time">Level Time: {levelTime}</h5>
-        <h5 className="level-time">Level Score: 300</h5>
+        <h5 className="modal-header">Level Time: {levelTime}</h5>
+        <h5 className="modal-header">Level Score: {levelScore}</h5>
+        <h5 className="modal-header">Total Score: {totalScore}</h5>
       </div>
       <div className="buttons-container">
         <button className="modal-buttons" onClick={handleResetClick}>

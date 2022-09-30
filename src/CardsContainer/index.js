@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { initialMinutes, initialSeconds } from "../constants";
@@ -11,7 +12,7 @@ import {
 } from "../redux/matchedCards";
 import { setLevel } from "../redux/currentLevel";
 import { pauseTimer } from "../redux/timer";
-import { setlevelTime } from "../redux/completionInfo";
+import { setLevelScore, setlevelTime, setTotalScore } from "../redux/completionInfo";
 import "./CardsContainer.scss";
 const CardsContainer = () => {
   const [isEndLevelModalOpen, setIsEndLevelModalOpen] = useState(false);
@@ -21,6 +22,7 @@ const CardsContainer = () => {
   const closeCardIds = useSelector((state) => state.matchedCards.idCardToFlipDown);
   const firstFlip = useSelector((state) => state.matchedCards.firstFlip);
   const { minutes, seconds } = useSelector((state) => state.timer);
+  const {currentLevel} = useSelector((state)=>state.currentLevel);
 
   const dispatch = useDispatch();
 
@@ -37,10 +39,21 @@ const CardsContainer = () => {
     }
     return (`${minutesPassed}:${secondsPassed < 10 ? `0${secondsPassed}` : secondsPassed}`)
   }
+
+  const calculateLevelScore = ()=>{
+    const rawCalculation = currentLevel*`${minutes}.${seconds}`;
+    const fixedCalculation = rawCalculation.toFixed(2);
+    const finalCalculation = fixedCalculation*100
+    return Math.round(finalCalculation);
+  }
+
   useEffect(() => {
     //open modal
     if (matchedCardIds.length && matchedCardIds.length === initialCards.length) {
       dispatch(pauseTimer());
+      const score = calculateLevelScore();
+      dispatch(setLevelScore(score));
+      dispatch(setTotalScore(false));
       const timePassed = calculateTimePassed();
       dispatch(setlevelTime(timePassed));
       setTimeout(setIsEndLevelModalOpen, 500, true);
